@@ -1,32 +1,32 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 import { sampleProducts } from "./data";
+import "./index.css";
+import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <>
-      <header>TS Amazone</header>
+    <div className="d-flex flex-column h-full">
+      <header>
+        <Navbar bg="dark" variant="dark" expand="lg">
+          <Container>
+            <Navbar.Brand>Amazon</Navbar.Brand>
+          </Container>
+          <Nav>
+            <Nav.Link href="/cart">Cart</Nav.Link>
+            <Nav.Link href="/signin">Sign In</Nav.Link>
+          </Nav>
+        </Navbar>
+      </header>
       <main>
-        <ul>
-          {sampleProducts.map((product) => (
-            <li key={product.slug}>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="product-image"
-              />
-              <h2>{product.name}</h2>
-              <h3>${product.price}</h3>
-            </li>
-          ))}
-        </ul>
+        <Container className="mt-3">
+          <Outlet></Outlet>
+        </Container>
       </main>
-      <footer>All rights reserved</footer>
-    </>
+      <footer className="text-center">All rights reserved</footer>
+    </div>
   );
 }
 
