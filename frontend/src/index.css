@@ -11,6 +11,20 @@
 
 .product-image{
   height: 400px;
+  width: 100%;
   
 
+}
+.rating span{
+color: #ffc000;
+}
+.product-card{
+  width: 100%;
+}
+
+img.large {
+  max-width: 100%;
+}
+img.thumbnail {
+  height: 80px;
 }

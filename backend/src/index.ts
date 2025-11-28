@@ -1,26 +1,37 @@
-import express,{Request,Response} from "express";
+import express, { Request, Response } from "express";
 import { sampleProducts } from "./data";
-import helmet from "helmet";
+import dotenv from "dotenv";
+import cors from "cors";
+import mongoose from "mongoose";
+import { productRouter } from "./Routers/ProductRouter";
+import { seedRouter } from "./Routers/SeedRouter";
 const app = express();
 const port = 5000;
+
+dotenv.config();
+
 app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'"],
-        connectSrc: [
-          "'self'",
-          "http://localhost:5000",
-          "http://me.kis.v2.scr.kaspersky-labs.com",
-          "ws://me.kis.v2.scr.kaspersky-labs.com"
-        ]
-      }
-    })
-  );
+  cors({
+    credentials: true,
+    origin: ["http://localhost:5173"],
+  })
+);
 
-app.get("/api/products",(req:Request,res:Response)=>{
-    res.send(sampleProducts)
-});
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/tsAmazon";
+mongoose.set("strictQuery", true);
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("connected to mongodb");
+  })
+  .catch(() => {
+    console.log("error mongodb");
+  });
 
-app.listen(port,()=>{
-    console.log(`server is running on port ${port} `)
+app.use("/api/products", productRouter);
+app.use("/api/seed", seedRouter);
+
+app.listen(port, () => {
+  console.log(`server is running on port ${port} `);
 });
